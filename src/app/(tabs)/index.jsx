@@ -1,8 +1,39 @@
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
+import { useCallback, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import AppScreen from "../../components/AppScreen";
+import ReportItem from "../../components/ReportItem";
+import { colors } from "../../constants/colors";
+import { getReports } from "../../constants/reportStorage";
 
 export default function Home() {
+    const [reports, setReports] = useState([]);
+const [error, setError] = useState("");
+
+useFocusEffect(
+    useCallback(function () {
+        loadReports();
+    }, [])
+);
+
+async function loadReports() {
+    setError("");
+
+    try {
+        const savedReports = await getReports();
+        setReports(savedReports);
+    } catch (error) {
+        setError("Could not load reports.");
+    }
+}
+const recentReports = reports.slice(0, 3);
+
+function openReport(id) {
+    router.push({
+        pathname: "/details",
+        params: { id: id }
+    });
+}
     return (
         <AppScreen>
             <View style={styles.header}>
@@ -20,13 +51,18 @@ export default function Home() {
             <View style={styles.row}>
             <Pressable
                 style={styles.card}
-                onPress={() => router.push("/report")}>
+                onPress={() => router.push({
+                    pathname: "/report",
+                    params: { id: "", type: "Lost" }})}>
                 <Text style={styles.lostcardTitle}>I Lost Something</Text>
                 <Text style={styles.searchText}>Post details so others can return it</Text>
             </Pressable>
             <Pressable
                 style={styles.card}
-                onPress={() => router.push("/report")}>
+                onPress={() => router.push({
+                    pathname: "/report",
+                    params: { id: "", type: "Found" }})
+                }>
                 <Text style={styles.foundcardTitle}>I Found Something</Text>
                 <Text style={styles.searchText}>Help return an item to its owner</Text>
             </Pressable>
@@ -34,20 +70,30 @@ export default function Home() {
             <View style={styles.sectionHeader}>
             <View style={styles.header}>
                 <Text style={styles.sectionTitle}>Recent Reports</Text>
-                <Text style={styles.subtitle}>Live updates around campus</Text>
+                <Text style={styles.subtitle}>Latest lost and foud items</Text>
             </View>
             <Pressable onPress={() => router.push("/browse")}>
                     <Text style={styles.link}>See all -&gt; </Text>
                 </Pressable>
             </View>
+            {error !== "" && (
+                <Text color={colors.mutedText}>{error}</Text>
+            )}
 
-            <Pressable
-                style={styles.report}
-                onPress={() => router.push("/details")}>
-                <Text style={styles.itemTitle}>Sony Headphones</Text>
-                <Text style={styles.lost}>LOST</Text>
-                <Text style={styles.grayText}>Main Library</Text>
-            </Pressable>
+            {error === "" && recentReports.length === 0 && (
+                <Text color={colors.mutedText}>No reports yet.</Text>
+            )}
+
+            {recentReports.map(function (item) {
+                return (
+                    <ReportItem
+                        key={item.id}
+                        report={item}
+                        onOpen={openReport}
+                        isOwner={false}
+                    />
+                );
+            })}
 
             <View style={styles.tip}>
                 <Text style={styles.tipTitle}>Safe Campus Hand-off</Text>
@@ -61,7 +107,7 @@ export default function Home() {
 }
 const styles = StyleSheet.create({
     header: {
-        alignItems: "left",
+        alignItems: "flex-start",
         marginBottom: 15,
     },
     title: {
@@ -131,32 +177,6 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: "bold",
         color: "#2C365E",
-    },
-    report: {
-        backgroundColor: "white",
-        padding: 15,
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: "#D1D5DF",
-        marginBottom: 10
-    },
-    itemTitle: {
-        fontSize: 15,
-        fontWeight: "bold",
-        color: "#2C365E",
-        marginBottom: 5
-    },
-    lost: {
-        color: "#AF125A",
-        fontWeight: "bold",
-        fontSize: 12,
-        marginBottom: 5
-    },
-    found: {
-        color: "#1B7A43",
-        fontWeight: "bold",
-        fontSize: 12,
-        marginBottom: 5
     },
     tip: {
         backgroundColor: "#E8DDB5",

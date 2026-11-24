@@ -14,6 +14,9 @@ export default function RootLayout() {
             <Stack.Screen name="details" options={{
                 title: "Item details"
             }} />
+            <Stack.Screen name="myReports" options={{ 
+                headerShown: false 
+            }}/>
             <Stack.Screen name="(tabs)" options={{
                 headerTitle: "Ufind: Lost and Found",
                 headerShown: true

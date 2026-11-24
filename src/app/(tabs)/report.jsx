@@ -37,8 +37,10 @@ export default function Report() {
 
         if (id) {
             loadReport();
+        } else if (params.type === "Found"){
+            setReportType("Found");
         }
-    }, [id]);
+    }, [id, params.type]);
 
     async function loadReport() {
         setLoading(true);

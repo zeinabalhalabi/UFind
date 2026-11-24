@@ -1,3 +1,4 @@
+import { Image } from "react-native";
 export const mockReports = [
     {
         id: "mock1",
@@ -27,7 +28,9 @@ export const mockReports = [
         location: "Recreation Gym",
         category: "Bottles",
         description: "A teal reusable water bottle.",
-        image: null
+        image: Image.resolveAssetSource(
+            require("../../assets/images/teal-waterbottle.png")
+        ).uri
     },
     {
         id: "mock4",
