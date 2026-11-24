@@ -39,7 +39,7 @@ export default function ImageInput({ imageUri, onChangeImage }) {
             return;
         }
 
-        Alert.alert("Remove photo?", "Remove this photo from the task?", [
+        Alert.alert("Remove photo?", "Remove this photo from this report?", [
             { text: "Cancel", style: "cancel" },
             { text: "Remove", style: "destructive", onPress: function () { onChangeImage(); } }
         ]);

@@ -12,7 +12,7 @@ export default function AppButton(props) {
 
 const styles = StyleSheet.create({
     button: {
-        backgroundColor: "#285548", padding: 12, borderRadius: 12, marginVertical: 6, alignItems: "center", minHeight: 44
+        backgroundColor: "#2C365E", padding: 12, borderRadius: 12, marginVertical: 6, alignItems: "center", minHeight: 44
     },
     buttonText: {
         color: "white", fontSize: 16, fontWeight: "600"

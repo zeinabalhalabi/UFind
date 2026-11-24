@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import AppScreen from "../../components/AppScreen";
 
@@ -30,17 +31,19 @@ export default function Home() {
                 <Text style={styles.searchText}>Help return an item to its owner</Text>
             </Pressable>
             </View>
-
             <View style={styles.sectionHeader}>
+            <View style={styles.header}>
                 <Text style={styles.sectionTitle}>Recent Reports</Text>
-                <Pressable onPress={() => router.push("/browse")}>
-                    <Text style={styles.link}>See all</Text>
+                <Text style={styles.subtitle}>Live updates around campus</Text>
+            </View>
+            <Pressable onPress={() => router.push("/browse")}>
+                    <Text style={styles.link}>See all -&gt; </Text>
                 </Pressable>
             </View>
+
             <Pressable
                 style={styles.report}
-                onPress={() => router.push("/details")}
-            >
+                onPress={() => router.push("/details")}>
                 <Text style={styles.itemTitle}>Sony Headphones</Text>
                 <Text style={styles.lost}>LOST</Text>
                 <Text style={styles.grayText}>Main Library</Text>
